@@ -1,13 +1,13 @@
 defmodule Tradiex.Trading do
   @moduledoc """
   https://documentation.tradier.com/brokerage-api/trading/getting-started
-  
+
   Five required parameters: class (equity, option, multileg, combo), symbol, duratin (day or gtc), side, quantity, type (market, limit, etc.)
   """
 
   @doc """
   Submit an equity order. Accepts options price, stop, and tag
-  
+
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> %{"id" => _id, "status" => status, "partner_id" => _partner_id} = Tradiex.Trading.post_order(acct, "equity", "AAPL", "buy", 1, "limit", "day", price: 1.00, tag: "example-tag")
     iex> status
@@ -34,6 +34,16 @@ defmodule Tradiex.Trading do
       Tradiex.request(:post, "accounts/#{account_id}/orders", URI.encode_query(query), %{})
 
     order
+  end
+
+  @doc """
+  Given an order ID and account ID, cancel an order. Returns :ok if successful.
+  """
+  def cancel_order(account_id, order_id) do
+    %{"order" => %{"status" => "ok"}} =
+      Tradiex.request(:del, "accounts/#{account_id}/orders/#{order_id}", "", %{})
+
+    :ok
   end
 
   def equity_market_order(account_id, symbol, quantity) do
