@@ -99,42 +99,85 @@ defmodule Tradiex.MarketData do
     days
   end
 
-  def get_time_and_sales() do
+  @doc """
+  Get historical times and sales
+
+    iex> [%{"open" => open} | _] = Tradiex.MarketData.get_time_and_sales("AAPL", "1min", "2021-07-13 09:30", "2021-07-23 16:00")
+    iex> open > 100
+    true
+  """
+  def get_time_and_sales(symbol, interval, start_date, end_date) do
+    params = %{symbol: symbol, interval: interval, start: start_date, end: end_date}
+
+    %{"series" => %{"data" => data}} = Tradiex.request(:get, "markets/timesales", "", params)
+    data
   end
 
+  @doc """
+  Easy to borrow securities. These can be shorted.
+
+    iex>symbols =  Tradiex.MarketData.get_etb_securities() |> Enum.map(fn %{"symbol" => symbol} -> symbol end)
+    iex> Enum.member?(symbols, "AAPL")
+    true
+  """
   def get_etb_securities() do
+    %{"securities" => %{"security" => securities}} = Tradiex.request(:get, "markets/etb", "", %{})
+    securities
   end
 
+  @doc """
+  Get date, time, and market status
+
+    iex> %{"state" => state} = Tradiex.MarketData.get_clock()
+    iex> state == "open" || state == "closed"
+    true
+  """
   def get_clock() do
+    %{"clock" => clock} = Tradiex.request(:get, "markets/clock", "", %{})
+    clock
   end
 
+  @doc """
+  Get the market calendar
+
+    iex> %{"year" => year} = Tradiex.MarketData.get_calendar()
+    iex> year
+    2021
+  """
   def get_calendar() do
+    %{"calendar" => calendar} = Tradiex.request(:get, "markets/calendar", "", %{})
+    calendar
   end
 
-  def search_compaines() do
+  @doc """
+  Lets you search for symbols/exchanges/etc. based on a query
+
+    iex> %{"symbol" => symbol} = Tradiex.MarketData.search_companies("Apple Inc.")
+    iex> symbol
+    "AAPL"
+  """
+  def search_companies(query) do
+    params = %{q: query}
+
+    %{"securities" => %{"security" => securities}} =
+      Tradiex.request(:get, "markets/search", "", params)
+
+    securities
   end
 
-  def lookup_symbol() do
-  end
+  @doc """
+  Search for info about a symbol.
 
-  def get_company() do
-  end
+    iex> %{"symbol" => symbol} = Tradiex.MarketData.lookup_symbol("AAPL")
+    iex> symbol
+    "AAPL"
+  """
+  def lookup_symbol(query) do
+    params = %{q: query}
 
-  def get_corporate_calendars() do
-  end
+    %{"securities" => %{"security" => securities}} =
+      Tradiex.request(:get, "markets/lookup", "", params)
 
-  def get_dividends() do
-  end
-
-  def get_corporate_actions() do
-  end
-
-  def get_ratios() do
-  end
-
-  def get_financial_reports() do
-  end
-
-  def get_price_statistics() do
+    securities
   end
 end
