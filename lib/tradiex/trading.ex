@@ -41,7 +41,7 @@ defmodule Tradiex.Trading do
   """
   def cancel_order(account_id, order_id) do
     %{"order" => %{"status" => "ok"}} =
-      Tradiex.request(:del, "accounts/#{account_id}/orders/#{order_id}", "", %{})
+      Tradiex.request(:delete, "accounts/#{account_id}/orders/#{order_id}", "", %{})
 
     :ok
   end
