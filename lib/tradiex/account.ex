@@ -38,8 +38,14 @@ defmodule Tradiex.Account do
       Tradiex.request(:get, "accounts/#{account_id}/positions", "", %{})
 
     case position_structure do
-      "null" -> []
-      %{"position" => position_list} -> position_list
+      "null" ->
+        []
+
+      %{"position" => position_list} ->
+        case position_list do
+          [_item | _] = items -> items
+          item -> [item]
+        end
     end
   end
 end

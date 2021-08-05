@@ -37,7 +37,13 @@ defmodule Tradiex.Trading do
   end
 
   def equity_market_order(account_id, symbol, quantity) do
-    post_order(account_id, "equity", symbol, "buy", quantity, "market", "day")
+    cond do
+      quantity > 0 ->
+        post_order(account_id, "equity", symbol, "buy", quantity, "market", "day")
+
+      quantity < 0 ->
+        post_order(account_id, "equity", symbol, "sell", -1 * quantity, "market", "day")
+    end
   end
 
   def equity_position_close(account_id, symbol) do
