@@ -18,8 +18,8 @@ defmodule Tradiex.Account do
 
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> %{"balances" => %{"total_equity" => equity}} = Tradiex.Account.get_balances(acct)
-    iex> equity
-    1.0e5
+    iex> equity > 50000
+    true
   """
   def get_balances(account_id) do
     Tradiex.request(:get, "accounts/#{account_id}/balances", "", %{})
@@ -30,6 +30,8 @@ defmodule Tradiex.Account do
 
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> positions = Tradiex.Account.get_positions(acct)
+    iex> positions
+    %{"cost_basis" => 294.66, "date_acquired" => "2021-08-04T17:20:38.742Z", "id" => 261486, "quantity" => 2.0, "symbol" => "AAPL"}
   """
   def get_positions(account_id) do
     %{"positions" => position_structure} =
