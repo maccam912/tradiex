@@ -73,6 +73,10 @@ defmodule Tradiex.MarketData do
 
   @doc """
   Get options roots for an underlying symbol
+
+    iex> [%{"options" => opts} | _] = Tradiex.MarketData.lookup_option_symbols("AAPL")
+    iex> List.first(opts)
+    "AAPL210917C00145000"
   """
   def lookup_option_symbols(underlying) do
     params = %{underlying: underlying}
@@ -83,6 +87,10 @@ defmodule Tradiex.MarketData do
 
   @doc """
   Get historical stock data
+
+    iex> [%{"date" => date} | _] = Tradiex.MarketData.get_historical_quotes("AAPL", "daily", "2020-01-01", "2021-01-01")
+    iex> date
+    "2020-01-02" # first trading day of 2020
   """
   def get_historical_quotes(symbol, interval, start_date, end_date) do
     params = %{symbol: symbol, interval: interval, start: start_date, end: end_date}
