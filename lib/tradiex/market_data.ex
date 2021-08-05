@@ -129,7 +129,7 @@ defmodule Tradiex.MarketData do
   Get date, time, and market status
 
     iex> %{"state" => state} = Tradiex.MarketData.get_clock()
-    iex> Enum.member?(["open", "closed", "premarket"], state)
+    iex> Enum.member?(["open", "closed", "premarket", "postmarket"], state)
     true
   """
   def get_clock() do
