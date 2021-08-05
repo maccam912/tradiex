@@ -18,8 +18,8 @@ defmodule Tradiex.Account do
 
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> %{"balances" => %{"total_equity" => equity}} = Tradiex.Account.get_balances(acct)
-    iex> equity > 0
-    true
+    iex> equity
+    1.0e5
   """
   def get_balances(account_id) do
     Tradiex.request(:get, "accounts/#{account_id}/balances", "", %{})
