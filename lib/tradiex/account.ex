@@ -24,4 +24,20 @@ defmodule Tradiex.Account do
   def get_balances(account_id) do
     Tradiex.request(:get, "accounts/#{account_id}/balances", "", %{})
   end
+
+  @doc """
+  Get positions for a certain account
+
+    iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
+    iex> positions = Tradiex.Account.get_positions(acct)
+  """
+  def get_positions(account_id) do
+    %{"positions" => position_structure} =
+      Tradiex.request(:get, "accounts/#{account_id}/positions", "", %{})
+
+    case position_structure do
+      "null" -> []
+      %{"position" => position_list} -> position_list
+    end
+  end
 end
