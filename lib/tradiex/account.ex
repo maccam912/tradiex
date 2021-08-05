@@ -3,7 +3,7 @@ defmodule Tradiex.Account do
 
   @doc """
   Get the user's profile (i.e. accounts)
-
+  
     iex> %{"status" => status} = Tradiex.Account.get_user_profile()
     iex> status
     "active"
@@ -15,7 +15,7 @@ defmodule Tradiex.Account do
 
   @doc """
   Get balances for a certain account
-
+  
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> %{"balances" => %{"total_equity" => equity}} = Tradiex.Account.get_balances(acct)
     iex> equity > 50000
@@ -27,7 +27,7 @@ defmodule Tradiex.Account do
 
   @doc """
   Get positions for a certain account
-
+  
     iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> positions = Tradiex.Account.get_positions(acct)
     iex> positions
@@ -47,5 +47,20 @@ defmodule Tradiex.Account do
           item -> [item]
         end
     end
+  end
+
+  @doc """
+  Get orders for account
+  
+    iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
+    iex> orders = Tradiex.Account.get_orders(acct)
+    iex> orders
+    %{}
+  """
+  def get_orders(account_id) do
+    %{"orders" => %{"order" => orders}} =
+      Tradiex.request(:get, "accounts/#{account_id}/orders", "", %{})
+
+    orders
   end
 end
