@@ -43,6 +43,12 @@ defmodule Tradiex.MarketData do
 
   @doc """
   Get expiration dates for a symbol
+
+      iex> exps = Tradiex.MarketData.get_option_expirations("AAPL")
+      iex> [first | _] = exps
+      iex> dt = Date.from_iso8601!(first)
+      iex> Date.day_of_week(dt)
+      5
   """
   def get_option_expirations(symbol) do
     params = %{symbol: symbol}
@@ -63,6 +69,9 @@ defmodule Tradiex.MarketData do
     symbols
   end
 
+  @doc """
+  Get historical stock data
+  """
   def get_historical_quotes(symbol, interval, start_date, end_date) do
     params = %{symbol: symbol, interval: interval, start: start_date, end: end_date}
 
