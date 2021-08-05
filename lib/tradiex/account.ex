@@ -4,7 +4,7 @@ defmodule Tradiex.Account do
   @doc """
   Get the user's profile (i.e. accounts)
 
-    iex> [%{"status" => status} | _] = Tradiex.Account.get_user_profile()
+    iex> %{"status" => status} = Tradiex.Account.get_user_profile()
     iex> status
     "active"
   """
@@ -16,7 +16,7 @@ defmodule Tradiex.Account do
   @doc """
   Get balances for a certain account
 
-    iex> [%{"account_number" => acct} | _] = Tradiex.Account.get_user_profile()
+    iex> %{"account_number" => acct} = Tradiex.Account.get_user_profile()
     iex> %{"balances" => %{"total_equity" => equity}} = Tradiex.Account.get_balances(acct)
     iex> equity > 0
     true
