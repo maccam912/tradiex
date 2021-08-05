@@ -18,6 +18,13 @@ defmodule Tradiex.MarketData do
   @doc """
   Get option chain quotes, plus greeks and IV.
   Dates are YYYY-MM-DD format
+
+    iex> [exp | _] = Tradiex.MarketData.get_option_expirations("AAPL")
+    iex> [%{"strike" => strike, "root_symbol" => root_symbol} | _] = Tradiex.MarketData.get_option_chains("AAPL", exp)
+    iex> strike
+    75.0
+    iex> root_symbol
+    "AAPL"
   """
   def get_option_chains(symbol, expiration) do
     params = %{symbol: symbol, expiration: expiration}
@@ -31,6 +38,11 @@ defmodule Tradiex.MarketData do
   @doc """
   Get option chain strike prices for a certain symbol and expiration.
   Dates are YYYY-MM-DD format
+
+    iex> [exp | _] = Tradiex.MarketData.get_option_expirations("AAPL")
+    iex> [lowest_strike | _] = Tradiex.MarketData.get_option_strikes("AAPL", exp)
+    iex> lowest_strike
+    75.0
   """
   def get_option_strikes(symbol, expiration) do
     params = %{symbol: symbol, expiration: expiration}
