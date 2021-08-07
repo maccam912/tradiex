@@ -6,6 +6,11 @@ defmodule Tradiex do
   require Logger
 
   @endpoint Application.compile_env!(:tradiex, :endpoint)
+
+  defp http_client() do
+    Application.get_env(:tradiex, :http_client)
+  end
+
   def request(method, endpoint, body, params) do
     url = "#{@endpoint}/#{endpoint}"
 
@@ -16,8 +21,9 @@ defmodule Tradiex do
 
     Logger.debug("Sending request to #{endpoint}")
 
-    {:ok, %HTTPoison.Response{status_code: 200, body: body}} =
-      HTTPoison.request(method, url, body, headers, params: params)
+    case http_client().request(method, url, body, headers, params: params) do
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, Poison.decode!(body)}
+    end
 
     Poison.decode!(body)
   end

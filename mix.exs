@@ -24,6 +24,7 @@ defmodule Tradiex.MixProject do
     [
       {:poison, "~> 5.0"},
       {:httpoison, "~> 1.8"},
+      {:mox, "~> 1.0", only: :test},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.21", only: :dev, runtime: false}
     ]
