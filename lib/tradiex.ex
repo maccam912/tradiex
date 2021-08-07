@@ -22,9 +22,14 @@ defmodule Tradiex do
     Logger.debug("Sending request to #{endpoint}")
 
     case http_client().request(method, url, body, headers, params: params) do
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} -> {:ok, Poison.decode!(body)}
-    end
+      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+        {:ok, Poison.decode!(body)}
 
-    Poison.decode!(body)
+      {:ok, %HTTPoison.Response{status_code: sc, body: body}} ->
+        {:error, %{"statu_code" => sc, "body" => Poison.decode!(body)}}
+
+      _ ->
+        {:error, :unknown_error}
+    end
   end
 end
